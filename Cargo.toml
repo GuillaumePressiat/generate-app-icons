@@ -1,11 +1,11 @@
 [package]
 name = "generate-app-icons"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Anonymous <dnrops@outlook.com>"]
 description = "A CLI for generate app icons for ios ipad Watch Mac Android devices"
 readme = "README.md"
-keywords = ["crate"]
+keywords = ["generate","icons","ios","Android","ipad"]
 categories = ["development-tools"]
 license = "MIT"
 documentation = "https://docs.rs/generate-app-icons"
