@@ -1,0 +1,17 @@
+[package]
+name = "generate-app-icons"
+version = "0.1.0"
+edition = "2021"
+authors = ["Anonymous <dnrops@outlook.com>"]
+description = "A CLI for generate app icons for ios ipad Watch Mac Android devices"
+readme = "README.md"
+keywords = ["crate"]
+categories = ["development-tools"]
+license = "MIT"
+documentation = "https://docs.rs/generate-app-icons"
+repository = "https://gitlab.com/andrew_ryan/generate-app-icons"
+homepage = "https://dnrops.gitee.io"
+
+[dependencies]
+doe = "0.2.26"
+image = "0.24.7"
