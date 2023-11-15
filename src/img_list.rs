@@ -14,11 +14,13 @@ pub fn dir_paths() -> &'static [&'static str] {
         "./app_icons/android/mipmap-xxhdpi",
         "./app_icons/android/mipmap-xhdpi",
         "./app_icons/android",
+        "./app_icons/tauri_icons",
     ]
 }
 #[allow(warnings)]
 pub fn icons() -> Vec<IconImage<&'static str>> {
     vec![
+   
         IconImage {
             path: "app_icons/Assets.xcassets/AppIcon.appiconset/88.png",
             size: (88, 88),
@@ -170,6 +172,71 @@ pub fn icons() -> Vec<IconImage<&'static str>> {
         IconImage {
             path: "app_icons/playstore.png",
             size: (512, 512),
+        },
+
+        IconImage {
+            path: "app_icons/tauri_icons/icon.icns",
+            size: (1024, 1024),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/icon.ico",
+            size: (256, 256),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/icon.png",
+            size: (512, 512),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/Square30x30Logo.png",
+            size: (30, 30),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/Square150x150Logo.png",
+            size: (150, 150),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/StoreLogo.png",
+            size: (50, 50),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/Square107x107Logo.png",
+            size: (107, 107),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/Square89x89Logo.png",
+            size: (89, 89),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/Square310x310Logo.png",
+            size: (310, 310),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/Square142x142Logo.png",
+            size: (142, 142),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/128x128.png",
+            size: (128, 128),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/Square284x284Logo.png",
+            size: (284, 284),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/32x32.png",
+            size: (32, 32),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/Square44x44Logo.png",
+            size: (44, 44),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/Square71x71Logo.png",
+            size: (71, 71),
+        },
+        IconImage {
+            path: "app_icons/tauri_icons/128x128@2x.png",
+            size: (256, 256),
         },
     ]
 }

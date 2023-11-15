@@ -12,13 +12,15 @@ cargo install generate-app-icons
 ```sh
 generate-app-icons <icon_path>
 ```
+generate icons for ios android and tauri aplications
+
 ### Example
 ```sh
 generate-app-icons ./assets/icon.png
 
 tree ./app_icons
 
-app_icons
+./app_icons
 ├── Assets.xcassets
 │   └── AppIcon.appiconset
 │       ├── 100.png
@@ -65,5 +67,25 @@ app_icons
 │   └── mipmap-xxxhdpi
 │       └── ic_launcher.png
 ├── appstore.png
-└── playstore.png
+├── playstore.png
+└── tauri_icons
+    ├── 128x128.png
+    ├── 128x128@2x.png
+    ├── 32x32.png
+    ├── Square107x107Logo.png
+    ├── Square142x142Logo.png
+    ├── Square150x150Logo.png
+    ├── Square284x284Logo.png
+    ├── Square30x30Logo.png
+    ├── Square310x310Logo.png
+    ├── Square44x44Logo.png
+    ├── Square71x71Logo.png
+    ├── Square89x89Logo.png
+    ├── StoreLogo.png
+    ├── icon.icns
+    ├── icon.ico
+    └── icon.png
+
+10 directories, 55 files
+
 ```
