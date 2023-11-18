@@ -15,12 +15,12 @@ pub fn dir_paths() -> &'static [&'static str] {
         "./app_icons/android/mipmap-xhdpi",
         "./app_icons/android",
         "./app_icons/tauri_icons",
+        "./app_icons/wix",
     ]
 }
 #[allow(warnings)]
 pub fn icons() -> Vec<IconImage<&'static str>> {
     vec![
-   
         IconImage {
             path: "app_icons/Assets.xcassets/AppIcon.appiconset/88.png",
             size: (88, 88),
@@ -237,6 +237,14 @@ pub fn icons() -> Vec<IconImage<&'static str>> {
         IconImage {
             path: "app_icons/tauri_icons/128x128@2x.png",
             size: (256, 256),
+        },
+        IconImage{
+            path:"app_icons/wix/banner.bmp",
+            size: (493,58),
+        },
+        IconImage{
+            path:"app_icons/wix/dialog_image.bmp",
+            size: (493,312),
         },
     ]
 }

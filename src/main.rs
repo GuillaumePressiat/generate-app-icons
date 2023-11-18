@@ -1,4 +1,5 @@
-use doe::args;
+use doe::{args, Print};
+use image::ImageFormat;
 mod img_list;
 #[allow(warnings)]
 fn main() -> Result<(), image::ImageError> {
@@ -9,6 +10,7 @@ fn main() -> Result<(), image::ImageError> {
 #[allow(warnings)]
 fn generate() -> Result<(), image::ImageError> {
     use doe::{DebugPrint, Str};
+    use rayon::prelude::*;
     use std::{path::PathBuf, str::FromStr};
     let args = args!();
     if args.len() != 1 {
@@ -17,25 +19,31 @@ fn generate() -> Result<(), image::ImageError> {
         return Ok(());
     } else {
         let icon_path = &args[0];
-        for dir in img_list::dir_paths() {
+        img_list::dir_paths()
+        .par_iter()
+        .for_each(|dir|{
             std::fs::create_dir_all(dir).expect("create directory failed");
-        }
-        let img = image::open(icon_path)?;
+        });
 
-        for icon in img_list::icons() {
+        img_list::icons()
+        .par_iter()
+        .for_each(|icon|{
             if icon.path.ends_with(".png") {
-                let resized_img = img.resize_exact(
-                    icon.size.0,
-                    icon.size.1,
-                    image::imageops::FilterType::Gaussian,
-                );
-                resized_img.save(icon.path)?;
+                resize_img_to_png(icon_path,icon.size,icon.path).unwrap();
+                icon.path.push_back(" done!").println();
             }else if icon.path.ends_with(".ico") {
-                convert_to_ico("app_icons/Assets.xcassets/AppIcon.appiconset/256.png", icon.path).unwrap();
+                resize_img_to_png(icon_path,(256,256),icon.path).unwrap();
+                convert_to_ico(icon.path, icon.path).unwrap();
+                icon.path.push_back(" done!").println();
             }else if icon.path.ends_with(".icns") {
-                convert_to_icns("app_icons/appstore.png",icon.path).unwrap();
+                resize_img_to_png(icon_path,(1024,1024),icon.path).unwrap();
+                convert_to_icns(icon.path,icon.path).unwrap();
+                icon.path.push_back(" done!").println();
+            }else if icon.path.ends_with(".bmp") {
+                convert_to_bmp(icon_path, icon.path,icon.size).unwrap();
+                icon.path.push_back(" done!").println();
             }
-        }
+        });
 
         let contents_json = include_str!("./Contents.json");
         std::fs::write(
@@ -57,13 +65,19 @@ fn get_img_size(path: &str) -> (u32, u32) {
 }
 
 #[allow(warnings)]
-fn resize_img(path: &str, size: (u32, u32), new_path: &str) -> Result<(), image::ImageError> {
+fn resize_img_to_png(path: &str, size: (u32, u32), new_path: &str) -> Result<(), image::ImageError> {
     let img = image::open(path)?;
     let resized_img = img.resize_exact(size.0, size.1, image::imageops::FilterType::Gaussian);
-    resized_img.save(new_path)?;
+    resized_img.save_with_format(new_path, ImageFormat::Png)?;
     Ok(())
 }
-
+#[allow(warnings)]
+fn convert_to_bmp(icon_path: &str,new_icon_path:&str,size: (u32, u32)) -> Result<(), Box<dyn std::error::Error>>{
+    let png_image = image::open(icon_path).expect("Failed to open PNG image");
+    let resized_image = png_image.resize_exact(size.0, size.1, image::imageops::FilterType::Lanczos3);
+    resized_image.save_with_format(new_icon_path, ImageFormat::Bmp).expect("Failed to save BMP image");
+    Ok(())
+}
 #[allow(warnings)]
 fn convert_to_icns(png_path: &str, icns_path: &str) -> Result<(), Box<dyn std::error::Error>> {
     use icns::{IconFamily, IconType, Image};
