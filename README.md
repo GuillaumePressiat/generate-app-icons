@@ -12,7 +12,7 @@ cargo install generate-app-icons
 ```sh
 generate-app-icons <icon_path>
 ```
-generate icons for ios android and tauri aplications
+generate icons for ios,android,tauri and wix bundle
 
 ### Example
 ```sh
