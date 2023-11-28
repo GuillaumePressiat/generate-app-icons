@@ -13,11 +13,20 @@ fn generate() -> Result<(), image::ImageError> {
     use rayon::prelude::*;
     use std::{path::PathBuf, str::FromStr};
     let args = args!();
-    if args.len() != 1 {
+    if args.len() <= 1 {
         println!("Usage:");
         println!("generate-app-icons <icon_path>");
+        println!("generate-app-icons resize 180::180 <icon_path>");
         return Ok(());
-    } else {
+    }
+    else if args.get(0).unwrap() == "resize"{
+        let width = &args.get(1).unwrap().split_to_vec("::").as_slice()[0].parse::<u32>().unwrap_or(100);
+        let height = &args.get(1).unwrap().split_to_vec("::").as_slice()[1].parse::<u32>().unwrap_or(100);
+        let icon_path = args.get(2).unwrap();
+        println!("resize {} to {}*{}", icon_path,width, height);
+        resize_img_to_png(icon_path, (*width,*height), &format!("{}x{}.png", width, height));
+    }
+     else {
         let icon_path = &args[0];
         img_list::dir_paths()
         .par_iter()
