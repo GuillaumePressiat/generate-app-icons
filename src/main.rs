@@ -23,8 +23,11 @@ fn generate() -> Result<(), image::ImageError> {
         let width = &args.get(1).unwrap().split_to_vec("::").as_slice()[0].parse::<u32>().unwrap_or(100);
         let height = &args.get(1).unwrap().split_to_vec("::").as_slice()[1].parse::<u32>().unwrap_or(100);
         let icon_path = args.get(2).unwrap();
-        println!("resize {} to {}*{}", icon_path,width, height);
-        resize_img_to_png(icon_path, (*width,*height), &format!("{}x{}.png", width, height));
+        let mut icon_name = icon_path.split_to_vec(".");
+        icon_name.pop();
+        let new_icon_name = format!("{}_{}x{}.png",icon_name.join("."),width, height);
+        println!("resize {} to {}", icon_path,new_icon_name);
+        resize_img_to_png(icon_path, (*width,*height), &new_icon_name);
     }
      else {
         let icon_path = &args[0];
