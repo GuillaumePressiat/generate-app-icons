@@ -10,9 +10,9 @@ cargo install generate-app-icons
 ```
 ## Usage
 ```sh
-generate-app-icons <icon_path>
+generate-app-icons gen <icon_path>  => generate all icons
 # resize image to 180*180
-generate-app-icons resize 180::180 <icon_path>
+generate-app-icons resize 180::180 <icon_path>  => resize icon
 ```
 generate icons for ios,android,tauri and wix bundle
 

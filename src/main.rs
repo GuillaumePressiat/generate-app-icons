@@ -15,44 +15,29 @@ fn generate() -> Result<(), image::ImageError> {
     let args = args!();
     if args.len() <= 1 {
         println!("Usage:");
-        println!("generate-app-icons <icon_path>");
-        println!("generate-app-icons resize 180::180 <icon_path>");
+        println!("generate-app-icons gen <icon_path>  => generate all icons");
+        println!("generate-app-icons resize 180::180 <icon_path>  => resize icon");
         return Ok(());
-    }
-    else if args.get(0).unwrap() == "resize"{
-        let width = &args.get(1).unwrap().split_to_vec("::").as_slice()[0].parse::<u32>().unwrap_or(100);
-        let height = &args.get(1).unwrap().split_to_vec("::").as_slice()[1].parse::<u32>().unwrap_or(100);
-        let icon_path = args.get(2).unwrap();
-        let mut icon_name = icon_path.split_to_vec(".");
-        icon_name.pop();
-        let new_icon_name = format!("{}_{}x{}.png",icon_name.join("."),width, height);
-        println!("resize {} to {}", icon_path,new_icon_name);
-        resize_img_to_png(icon_path, (*width,*height), &new_icon_name);
-    }
-     else {
-        let icon_path = &args[0];
-        img_list::dir_paths()
-        .par_iter()
-        .for_each(|dir|{
+    } else if args.get(0).unwrap() == "gen" {
+        let icon_path = &args[1];
+        img_list::dir_paths().par_iter().for_each(|dir| {
             std::fs::create_dir_all(dir).expect("create directory failed");
         });
 
-        img_list::icons()
-        .par_iter()
-        .for_each(|icon|{
+        img_list::icons().par_iter().for_each(|icon| {
             if icon.path.ends_with(".png") {
-                resize_img_to_png(icon_path,icon.size,icon.path).unwrap();
+                resize_img_to_png(icon_path, icon.size, icon.path).unwrap();
                 icon.path.push_back(" done!").println();
-            }else if icon.path.ends_with(".ico") {
-                resize_img_to_png(icon_path,(256,256),icon.path).unwrap();
+            } else if icon.path.ends_with(".ico") {
+                resize_img_to_png(icon_path, (256, 256), icon.path).unwrap();
                 convert_to_ico(icon.path, icon.path).unwrap();
                 icon.path.push_back(" done!").println();
-            }else if icon.path.ends_with(".icns") {
-                resize_img_to_png(icon_path,(1024,1024),icon.path).unwrap();
-                convert_to_icns(icon.path,icon.path).unwrap();
+            } else if icon.path.ends_with(".icns") {
+                resize_img_to_png(icon_path, (1024, 1024), icon.path).unwrap();
+                convert_to_icns(icon.path, icon.path).unwrap();
                 icon.path.push_back(" done!").println();
-            }else if icon.path.ends_with(".bmp") {
-                convert_to_bmp(icon_path, icon.path,icon.size).unwrap();
+            } else if icon.path.ends_with(".bmp") {
+                convert_to_bmp(icon_path, icon.path, icon.size).unwrap();
                 icon.path.push_back(" done!").println();
             }
         });
@@ -64,10 +49,28 @@ fn generate() -> Result<(), image::ImageError> {
         )
         .expect("wrire  contents_json failed");
         println!("Generation completed successfully");
+    } else if args.get(0).unwrap() == "resize" {
+        let width = &args.get(1).unwrap().split_to_vec("::").as_slice()[0]
+            .parse::<u32>()
+            .unwrap_or(100);
+        let height = &args.get(1).unwrap().split_to_vec("::").as_slice()[1]
+            .parse::<u32>()
+            .unwrap_or(100);
+        let icon_path = args.get(2).unwrap();
+        let mut icon_name = icon_path.split_to_vec(".");
+        icon_name.pop();
+        let new_icon_name = format!("./{}_{}x{}.png", icon_name.join("."), width, height);
+        println!("resize {} to {}", icon_path, new_icon_name);
+        resize_img_to_png(icon_path, (*width, *height), &new_icon_name);
+    } else {
+        println!("Usage:");
+        println!("generate-app-icons gen <icon_path>  => generate all icons");
+        println!("generate-app-icons resize 180::180 <icon_path>  => resize icon");
         return Ok(());
     }
     Ok(())
 }
+
 #[allow(warnings)]
 fn get_img_size(path: &str) -> (u32, u32) {
     use image::GenericImageView;
@@ -77,17 +80,28 @@ fn get_img_size(path: &str) -> (u32, u32) {
 }
 
 #[allow(warnings)]
-fn resize_img_to_png(path: &str, size: (u32, u32), new_path: &str) -> Result<(), image::ImageError> {
+fn resize_img_to_png(
+    path: &str,
+    size: (u32, u32),
+    new_path: &str,
+) -> Result<(), image::ImageError> {
     let img = image::open(path)?;
     let resized_img = img.resize_exact(size.0, size.1, image::imageops::FilterType::Gaussian);
     resized_img.save_with_format(new_path, ImageFormat::Png)?;
     Ok(())
 }
 #[allow(warnings)]
-fn convert_to_bmp(icon_path: &str,new_icon_path:&str,size: (u32, u32)) -> Result<(), Box<dyn std::error::Error>>{
+fn convert_to_bmp(
+    icon_path: &str,
+    new_icon_path: &str,
+    size: (u32, u32),
+) -> Result<(), Box<dyn std::error::Error>> {
     let png_image = image::open(icon_path).expect("Failed to open PNG image");
-    let resized_image = png_image.resize_exact(size.0, size.1, image::imageops::FilterType::Lanczos3);
-    resized_image.save_with_format(new_icon_path, ImageFormat::Bmp).expect("Failed to save BMP image");
+    let resized_image =
+        png_image.resize_exact(size.0, size.1, image::imageops::FilterType::Lanczos3);
+    resized_image
+        .save_with_format(new_icon_path, ImageFormat::Bmp)
+        .expect("Failed to save BMP image");
     Ok(())
 }
 #[allow(warnings)]

@@ -173,7 +173,6 @@ pub fn icons() -> Vec<IconImage<&'static str>> {
             path: "app_icons/playstore.png",
             size: (512, 512),
         },
-
         IconImage {
             path: "app_icons/tauri_icons/icon.icns",
             size: (1024, 1024),
@@ -238,13 +237,13 @@ pub fn icons() -> Vec<IconImage<&'static str>> {
             path: "app_icons/tauri_icons/128x128@2x.png",
             size: (256, 256),
         },
-        IconImage{
-            path:"app_icons/wix/banner.bmp",
-            size: (493,58),
+        IconImage {
+            path: "app_icons/wix/banner.bmp",
+            size: (493, 58),
         },
-        IconImage{
-            path:"app_icons/wix/dialog_image.bmp",
-            size: (493,312),
+        IconImage {
+            path: "app_icons/wix/dialog_image.bmp",
+            size: (493, 312),
         },
     ]
 }
